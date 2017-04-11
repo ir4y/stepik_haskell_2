@@ -11,9 +11,18 @@ instance Foldable Tree where
   foldr f init Nil = init
   foldr f init (Branch l x r) = (foldr f (f x (foldr f init r)) l)
 
+ {- For task 2.2.4 -}
+instance Functor Tree where
+  fmap f Nil = Nil
+  fmap f (Branch l x r) = (Branch (fmap f l) (f x) (fmap f r))
+
 instance Foldable Preorder where
   foldr f init (PreO Nil) = init
   foldr f init (PreO (Branch l x r)) = (f x (foldr f (foldr f init (PreO r)) (PreO l)))
+
+ {- For task 2.2.4 -}
+instance Functor Preorder where
+  fmap f (PreO tree) = (PreO (fmap f tree))
 
 instance Foldable Postorder where
   foldr f init (PostO Nil) = init
@@ -53,3 +62,22 @@ tree2 = Branch (Branch (Branch Nil 1 Nil) 2 (Branch (Branch (Branch Nil 8 Nil) 7
  /         \
 8           11
 -}
+
+
+{- For task 2.2.4 -}
+sequenceA_ :: (Foldable t, Applicative f) => t (f a) -> f ()
+sequenceA_ = foldr (*>) (pure ())
+
+{- For task 2.2.4 -}
+tree3 = (PreO (Branch (Branch Nil 1 Nil) 2 (Branch (Branch Nil 3 Nil) 4 (Branch Nil 5 Nil))))
+{-
+    4
+   / \
+  2   5
+ / \
+1   3
+-}
+
+{- For task 2.2.5 -}
+traverse_ :: (Foldable t, Applicative f) => (a -> (f b)) -> t a -> f ()
+traverse_ f = foldr ((*>) . f) (pure ())
