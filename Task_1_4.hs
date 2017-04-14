@@ -1,4 +1,4 @@
-module Task_1_4_4 where
+module Task_1_4 where
 import Control.Applicative
 import Data.Char
 
